@@ -1,6 +1,10 @@
 :set number
 :set relativenumber
 
+:set lcs+=space:·
+:let g:indentLine_leadingSpaceChar='·'
+:let g:indentLine_leadingSpaceEnabled='1'
+
 :set autoindent
 :set tabstop=4
 :set shiftwidth=4
@@ -30,14 +34,19 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
 
-
 " UI/UX
 "
 " Airline
 Plug 'https://github.com/vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'https://github.com/Yggdroot/indentLine'
 
 Plug 'Xuyuanp/scrollbar.nvim'
+
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Vimscript
+"Plug "nvim-treesitter/nvim-treesitter"
+"Plug "SmiteshP/nvim-gps"
 
 Plug 'https://github.com/preservim/nerdtree'
 Plug 'https://github.com/tpope/vim-surround'
@@ -46,36 +55,68 @@ Plug 'https://github.com/ap/vim-css-color'
 Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/terryma/vim-multiple-cursors'
 Plug 'https://github.com/preservim/tagbar'
-Plug 'https://github.com/severin-lemaignan/vim-minimap'
+Plug 'Olical/aniseed'
 
 "Discord
 Plug 'andweeb/presence.nvim'
 
 " Minimap
-Plug 'rinx/nvim-minimap'
+Plug 'wfxr/minimap.vim'
+" Reguipmnets =============
+" brew install code-minimap
+" =========================
 
 " Plug 'severin-lemaignan/vim-minimap'
 
 
 call plug#end()
 
+"require("nvim-gps").setup()
+
+" Minimap =======================
+
+" hi MinimapCurrentRange ctermfg=Green guifg=#50FA7B guibg=#50FA7B
+" let g:minimap_range_color = 'MinimapCurrentRange'
+
+hi MinimapCurrentLine ctermfg=Green guifg=#50FA7B guibg=#f3f3f3
+let g:minimap_cursor_color = 'MinimapCurrentLine'
+
+autocmd ColorScheme *
+        \ highlight minimapCursor            ctermbg=59  ctermfg=228 guibg=#5F5F5F guifg=#50FA7B |
+        \ highlight minimapRange             ctermbg=242 ctermfg=228 guibg=#4F4F4F guifg=#50FA7B
+
+let g:minimap_highlight_range = 1
+let g:minimap_width = 20
+let g:minimap_auto_start = 1
+let g:minimap_auto_start_win_enter = 1
+let g:minimap_highlight_search = 1
+let g:minimap_git_colors = 1 
+
+" ===============================
+
 " ScrollBar =====================
 
-augroup ScrollbarInit
-  autocmd!
-  autocmd WinScrolled,VimResized,QuitPre * silent! lua require('scrollbar').show()
-  autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
-  autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
-augroup end
+"augroup ScrollbarInit
+"  autocmd!
+"  autocmd WinScrolled,VimResized,QuitPre * silent! lua require('scrollbar').show()
+"  autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
+"  autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
+"augroup end
 
 " ScrollBarEnd ==================
 
-let g:minimap#filetype#excludes = 1
-let g:minimap#window#height = 300
+"let g:minimap#filetype#excludes = 1
+"let g:minimap#window#height = 20
 
 colorscheme gruvbox
 
+
+
+"noremap <C-9> :call AdjustFontSize(1)<CR>
+"noremap <C-0> :call AdjustFontSize(-1)<CR>
+
 nnoremap <C-o> :NERDTreeToggle<CR>
+
 nmap <F8> :TagbarToggle<CR>
 
 " Bad Idea ============================
@@ -119,7 +160,7 @@ cmp.setup {
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-i>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
