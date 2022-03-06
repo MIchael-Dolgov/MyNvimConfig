@@ -24,7 +24,11 @@
 call plug#begin('~/.vim/plugged')
 
 " Color Scheme
+Plug 'cocopon/iceberg.vim'
 Plug 'https://github.com/morhetz/gruvbox'
+Plug 'arcticicestudio/nord-vim'
+Plug 'EdenEast/nightfox.nvim'
+" Plug '
 
 " Hardware
 Plug 'neovim/nvim-lspconfig'
@@ -56,7 +60,6 @@ Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/terryma/vim-multiple-cursors'
 Plug 'https://github.com/preservim/tagbar'
 Plug 'Olical/aniseed'
-
 "Discord
 Plug 'andweeb/presence.nvim'
 
@@ -108,9 +111,12 @@ let g:minimap_git_colors = 1
 "let g:minimap#filetype#excludes = 1
 "let g:minimap#window#height = 20
 
-colorscheme gruvbox
-
-
+" colorscheme iceberg
+" colorscheme gruvbox
+colorscheme nord
+" colorscheme nightfox
+" colorscheme nordfox
+" colorscheme duskfox
 
 "noremap <C-9> :call AdjustFontSize(1)<CR>
 "noremap <C-0> :call AdjustFontSize(-1)<CR>
