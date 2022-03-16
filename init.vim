@@ -19,6 +19,10 @@
 
 :set colorcolumn=80
 
+let g:LanguageClient_serverCommands = {
+\ 'rust': ['rust-analyzer'],
+\ }
+
 " ignoremap jk <esc>
 
 call plug#begin('~/.vim/plugged')
@@ -31,6 +35,7 @@ Plug 'EdenEast/nightfox.nvim'
 " Plug '
 
 " Hardware
+Plug 'neoclide/coc.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'hrsh7th/nvim-cmp'
@@ -111,9 +116,9 @@ let g:minimap_git_colors = 1
 "let g:minimap#filetype#excludes = 1
 "let g:minimap#window#height = 20
 
-" colorscheme iceberg
+colorscheme iceberg
 " colorscheme gruvbox
-colorscheme nord
+" colorscheme nord
 " colorscheme nightfox
 " colorscheme nordfox
 " colorscheme duskfox
