@@ -14,7 +14,7 @@
 
 :set encoding=UTF-8
 " :set noswapfile
-:set scrolloff=8
+:set scrolloff=2
 :set fileformat=unix
 
 :set colorcolumn=80
@@ -35,7 +35,7 @@ Plug 'EdenEast/nightfox.nvim'
 " Plug '
 
 " Hardware
-Plug 'neoclide/coc.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'hrsh7th/nvim-cmp'
@@ -51,12 +51,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'https://github.com/Yggdroot/indentLine'
 
 Plug 'Xuyuanp/scrollbar.nvim'
-
-"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" Vimscript
-"Plug "nvim-treesitter/nvim-treesitter"
-"Plug "SmiteshP/nvim-gps"
-
 Plug 'https://github.com/preservim/nerdtree'
 Plug 'https://github.com/tpope/vim-surround'
 Plug 'https://github.com/tpope/vim-commentary'
@@ -66,16 +60,12 @@ Plug 'https://github.com/terryma/vim-multiple-cursors'
 Plug 'https://github.com/preservim/tagbar'
 Plug 'Olical/aniseed'
 "Discord
-Plug 'andweeb/presence.nvim'
+Plug'aurieh/discord.nvim'
 
 " Minimap
 Plug 'wfxr/minimap.vim'
 " Reguipmnets =============
 " brew install code-minimap
-" =========================
-
-" Plug 'severin-lemaignan/vim-minimap'
-
 
 call plug#end()
 
@@ -129,12 +119,6 @@ colorscheme iceberg
 nnoremap <C-o> :NERDTreeToggle<CR>
 
 nmap <F8> :TagbarToggle<CR>
-
-" Bad Idea ============================
-" nnoremap <C-m> :MinimapOpen<CR>
-" nnoremap :MinimapClose
-" let g:minimap_highlight='Visual'
-" =====================================
 
 let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
