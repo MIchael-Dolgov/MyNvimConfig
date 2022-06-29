@@ -2,17 +2,17 @@
 ":set relativenumber
 ":set macligatures
 :set guifont=Fira\ Code:h12
+:set completeopt=preview
 
 :set lcs+=space:·
 :let g:indentLine_leadingSpaceChar='·'
 :let g:indentLine_leadingSpaceEnabled='1'
 
-":let g:airline_theme='base16_horizon_terminal_dark' maybe
+":let g:airline_theme='base16_horizon_terminal_dark'
 ":let g:airline_theme='base16_cupertino'
-":let g:airline_theme='transparent'
+:let g:airline_theme='transparent'
 ":let g:airline_theme='tomorrow'
-":let g:airline_theme='ayu_dark'
-":let g:airline_theme='transparent'
+":let g:airline_theme='nord'
 ":let g:airline_theme='zenburn'
 
 :set autoindent
@@ -41,6 +41,7 @@ Plug 'EdenEast/nightfox.nvim'
 Plug 'rose-pine/neovim'
 
 " Airline theme
+Plug 'lambdalisue/battery.vim/'
 Plug 'vim-airline/vim-airline-themes'
 
 " Hardware
@@ -79,16 +80,17 @@ call plug#end()
 "require("nvim-gps").setup()
 
 " Minimap==========================================================
-hi MinimapCurrentRange ctermfg=Green guifg=#50FA7B guibg=#50FA7B
+hi MinimapCurrentRange ctermfg=Green guifg=#f2f2f2 guibg=#2b2f3d
 let g:minimap_range_color = 'MinimapCurrentRange'
 
-hi MinimapCurrentLine ctermfg=Green guifg=#50FA7B guibg=#f3b9f2
+hi MinimapCurrentLine ctermfg=Green guifg=#CC6666 guibg=#f9f0f9
 let g:minimap_cursor_color = 'MinimapCurrentLine'
 
-autocmd ColorScheme *
-        \ highlight minimapCursor ctermbg=59  ctermfg=228 guibg=#5F5F5F guifg=#A39B7C |
-        "\ highlight minimapRange ctermbg=242 ctermfg=228 guibg=#4F4F4F guifg=#50FA7B
+"autocmd ColorScheme *
+		"\ highlight minimapCursor ctermbg=59  ctermfg=228 guibg=#1a9F4b guifg=#A39B7C |
+		"\ highlight minimapRange ctermbg=242 ctermfg=228 guibg=#1a9F4b guifg=#50FA7B
 
+"let g:minimap_enable_highlight_colorgroup = 1
 let g:minimap_highlight_range = 1
 let g:minimap_width = 20
 let g:minimap_auto_start = 1
@@ -104,14 +106,12 @@ lua require('Comment').setup()
 "=====================================
 
 " ScrollBar =====================
-
 "augroup ScrollbarInit
 "  autocmd!
 "  autocmd WinScrolled,VimResized,QuitPre * silent! lua require('scrollbar').show()
 "  autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
 "  autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
 "augroup end
-
 " ScrollBarEnd==================
 
 colorscheme rose-pine
@@ -124,11 +124,88 @@ colorscheme rose-pine
 
 " Bufferline=================================================
 set termguicolors
-lua require("bufferline").setup{}
+
+"May choose style: slant, padded_slant, thick, thin
+"numbers = \"ordinal"
+
+lua << EOF
+require("bufferline").setup {
+	options = {
+		numbers = "ordinal",
+		separator_style = "slant",
+		mode = "buffers",
+		indicator_icon = '▎',
+		buffer_close_icon = '',
+		modified_icon = '●',
+		close_icon = '',
+		left_trunc_marker = '',
+		right_trunc_marker = '',
+		max_name_length = 18,
+		tab_size = 25,
+		show_close_icon = false,
+		show_buffer_default_icon = true,
+		show_buffer_close_icons = true,
+		show_buffer_icons = true,
+		show_tab_indicators = true,
+		color_icons = true,
+		diagnostics = "coc",
+
+		diagnostics_indicator = function(count, level, diagnostics_dict, context)
+			local icon = level:match("error") and " " or " "
+			return " " .. icon .. count
+		end,
+
+		custom_areas = {
+			right = function()
+				local result = {}
+				local seve = vim.diagnostic.severity
+				local error = #vim.diagnostic.get(0, {severity = seve.ERROR})
+				local warning = #vim.diagnostic.get(0, {severity = seve.WARN})
+				local info = #vim.diagnostic.get(0, {severity = seve.INFO})
+				local hint = #vim.diagnostic.get(0, {severity = seve.HINT})
+
+				if error >= 0 then
+					table.insert(result, {text = " " .. "  " .. error, guifg = "#EC5241", guibg = "#4C3C53",})
+				end
+
+				if warning >= 0 then
+					table.insert(result, {text = "  " .. warning, guifg = "#EFB839", guibg = "#4C3C53",})
+				end
+
+				if hint >= 0 then
+					table.insert(result, {text = "  " .. hint, guifg = "#A3BA5E", guibg = "#4C3C53",})
+				end
+
+				if info >= 0 then
+					table.insert(result, {text = "  " .. info .. "   " ,guifg = "#7EA9A7", guibg = "#4C3C53",})
+				end
+				return result
+			end,
+		}
+	}
+}
+
+require('bufferline').exec()
+EOF
 " ==========================================================
 
 " Airline==================================================
 let g:airline_section_z = " %p ☰ %l/%L  ln : %c " 
+let g:battery#update_statusline = 1 
+
+function! Battery_icon() 
+  let l:battery_icon = {
+    \ 5: "",
+    \ 4: "",
+    \ 3: "",
+    \ 2: "",
+    \ 1: ""}
+    
+  let l:backend = battery#backend()
+  let l:nf = float2nr(round(backend.value / 20.0))
+  return printf('%s', get(battery_icon, nf))
+endfunction
+let g:airline_section_b = airline#section#create(['%{Battery_icon()} %{battery#value()}%%'])
 
 " let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#tabline#left_sep = ' '
