@@ -3,7 +3,7 @@ let g:coc_global_extensions = [
 	\ 'coc-html',
 	\ 'coc-explorer',
 	\ 'coc-go',
-	\ 'coc-python',
+	\ 'coc-python', 
 	\ 'coc-rust-analyzer',
 	\ 'coc-tsserver',
 	\ 'coc-json',
@@ -12,13 +12,15 @@ let g:coc_global_extensions = [
 	\]
 
 :set number
-:set numberwidth=10
+:set numberwidth=8
+":highlight number ctermfg=black ctermbg=black
+
 :set completeopt=preview
 :set guifont=Fira\ Code:h12
 :set sessionoptions=curdir,folds,help,slash,tabpages,unix
 :set sessionoptions-=blank
 
-:set cmdheight=2
+:set cmdheight=1
 :set signcolumn=yes
 :set signcolumn=number
 :set shortmess+=c
@@ -29,7 +31,7 @@ let g:coc_global_extensions = [
 :let g:indentLine_char = ''
 ":let g:indentLine_leadingSpaceEnabled='1'
 
-:set cursorline 
+:set cursorline
 :set autoindent
 :set tabstop=4
 :set shiftwidth=4
@@ -52,8 +54,12 @@ Plug 'glepnir/dashboard-nvim'
 Plug 'cocopon/iceberg.vim'
 Plug 'https://github.com/morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim' 
-Plug 'EdenEast/nightfox.nvim'
 Plug 'rose-pine/neovim'
+Plug 'sainnhe/everforest'
+Plug 'junegunn/seoul256.vim'
+Plug 'tomasr/molokai'
+Plug 'Shatur/neovim-ayu'
+
 " Airline theme
 Plug 'lambdalisue/battery.vim/'
 Plug 'vim-airline/vim-airline-themes'
@@ -134,15 +140,15 @@ EOF
 " ================================================================
 
 " Minimap==========================================================
-hi MinimapCurrentRange ctermfg=Green guifg=#f2f2f2 guibg=#2b2f3d
-let g:minimap_range_color = 'MinimapCurrentRange'
+"hi MinimapCurrentRange ctermfg=Green guifg=#f2f2f2 guibg=#2b2f3d
+"let g:minimap_range_color = 'MinimapCurrentRange'
 
-hi MinimapCurrentLine ctermfg=Green guifg=#CC6666 guibg=#f9f0f9
-let g:minimap_cursor_color = 'MinimapCurrentLine'
+"hi MinimapCurrentLine ctermfg=Green guifg=#CC6666 guibg=#f9f0f9
+"let g:minimap_cursor_color = 'MinimapCurrentLine'
 
 "autocmd ColorScheme *
-		"\ highlight minimapCursor ctermbg=59  ctermfg=228 guibg=#1a9F4b guifg=#A39B7C |
-		"\ highlight minimapRange ctermbg=242 ctermfg=228 guibg=#1a9F4b guifg=#50FA7B
+		\ highlight minimapCursor ctermbg=59  ctermfg=228 guibg=#1a9F4b guifg=#A39B7C |
+		\ highlight minimapRange ctermbg=59 ctermfg=228 guibg=#1a9F4b guifg=#50FA7B
 
 "let g:minimap_enable_highlight_colorgroup = 1
 let g:minimap_auto_start = 0
@@ -168,11 +174,11 @@ require("telescope").setup {
           -- your custom insert mode mappings
         },
         ["n"] = {
-          -- your custom normal mode mappings
-        },
+          -- your custom normal mode mappings },
       },
     },
   },
+}
 }
 EOF
 lua require("telescope").load_extension "file_browser"
@@ -186,14 +192,6 @@ lua require("telescope").load_extension "file_browser"
 "  autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
 "augroup end
 " ScrollBarEnd==================
-
-colorscheme rose-pine
-" colorscheme iceberg
-" colorscheme gruvbox
-" colorscheme nord
-" colorscheme nightfox
-" colorscheme nordfox
-" colorscheme duskfox
 
 " Bufferline=================================================
 set termguicolors
@@ -253,7 +251,6 @@ autocmd ColorScheme *
 " Airline==================================================
 let g:airline_section_z = " %p ☰ %l/%L  ln : %c " 
 let g:battery#update_statusline = 1 
-let g:airline_theme='transparent'
 
 function! Battery_icon() 
   let l:battery_icon = {
@@ -398,4 +395,17 @@ db.custom_center = {
       }
 vim.g.indentLine_fileTypeExclude = { 'dashboard' }
 EOF
+
+" Color Schemas Configs============================================
+"let g:airline_theme='transparent'
+let g:seoul256_background = 234
+" colorscheme molokai
+colorscheme seoul256
+" colorscheme ayu-dark
+" colorscheme nord
+" colorscheme rose-pine
+" colorscheme everforest
+" colorscheme gruvbox
+" colorscheme iceberg
+"=================================================================
 
