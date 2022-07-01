@@ -1,0 +1,43 @@
+{
+	//disable snippet pythonx
+	"snippets.ultisnips.enable": false,
+
+	//popup coc
+
+	//diagnostics coc
+	"diagnostic.checkCurrentLine": true,
+
+	// explorer
+	"explorer.floating.border.title": "Explorer",
+	"explorer.file.reveal.auto": false,
+	"explorer.width": 30,
+	"explorer.icon.enableNerdfont": true,
+	"explorer.previewAction.onHover": "labeling",
+	"explorer.file.child.template": "[git | 2] [selection | clip | 1] [indent][icon | 1] [diagnosticError & 1][filename omitCenter 1][modified][readonly] [linkIcon & 1][link growRight 1 omitCenter 5]",
+	"explorer.buffer.root.template": "[icon & 1] OPEN EDITORS",
+	"explorer.file.root.template": "[icon & 1] PROJECT ([root])",
+	"explorer.file.showHiddenFiles": true,
+	"explorer.buffer.showHiddenBuffers": true,
+	"explorer.buffer.tabOnly": false,
+	"explorer.diagnostic.enableSubscriptNumber": true,
+	"explorer.diagnostic.displayMax": 99,
+	"explorer.git.enable": true,
+
+	"explorer.filename.colored.enable": {
+		"diagnosticError?": true,
+		"diagnosticWarning?": true,
+		"git?": true
+	},
+
+	"explorer.keyMappings.global": {
+		"s": "open:vsplit",
+		"mm": "rename",
+		"mc": "copyFile",
+		"C": "copyFile",
+		"md": "delete",
+		"D": "delete",
+		"ma": "addFile",
+		"mA": "addDirectory"
+	}
+}
+
