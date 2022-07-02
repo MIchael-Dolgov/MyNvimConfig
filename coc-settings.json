@@ -2,7 +2,10 @@
 	//disable snippet pythonx
 	"snippets.ultisnips.enable": false,
 
-	//popup coc
+	//config coc
+	"diagnostic.errorSign": "",
+	"diagnostic.warningSign": "",
+	"diagnostic.infoSign": "",
 
 	//diagnostics coc
 	"diagnostic.checkCurrentLine": true,

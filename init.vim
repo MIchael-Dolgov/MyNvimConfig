@@ -29,7 +29,7 @@ let g:coc_global_extensions = [
 :set signcolumn=yes
 :set signcolumn=number
 :set shortmess+=c
-:set updatetime=200
+:set updatetime=100
 
 :set cursorline
 :set autoindent
@@ -51,18 +51,17 @@ call plug#begin('~/.config/nvim/plugins')
 Plug 'glepnir/dashboard-nvim'
 
 " Color Scheme
-Plug 'cocopon/iceberg.vim'
 Plug 'https://github.com/morhetz/gruvbox'
-Plug 'arcticicestudio/nord-vim' 
-Plug 'rose-pine/neovim'
-Plug 'sainnhe/everforest'
 Plug 'junegunn/seoul256.vim'
-Plug 'tomasr/molokai'
-Plug 'Shatur/neovim-ayu'
+
+" Debug
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
 
 " Airline theme
 Plug 'lambdalisue/battery.vim/'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'enricobacis/vim-airline-clock'
 
 " Hardware
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -78,13 +77,12 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Airline
 Plug 'https://github.com/vim-airline/vim-airline'
-"Plug 'bling/vim-bufferline'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 
 " Scrollbar
-"Plug 'Xuyuanp/scrollbar.nvim'
+Plug 'kevinhwang91/nvim-hlslens'
+Plug 'petertriho/nvim-scrollbar'
 
-"Plug 'https://github.com/preservim/nerdtree'
 Plug 'https://github.com/tpope/vim-surround'
 Plug 'https://github.com/tpope/vim-commentary'
 Plug 'https://github.com/ap/vim-css-color'
@@ -103,6 +101,11 @@ Plug 'wfxr/minimap.vim'   " brew install code-minimap
 
 call plug#end()
 
+" Scrollbar=========================================================
+lua require("scrollbar").setup()
+lua require("scrollbar.handlers.search").setup()
+" ===================================================================
+
 " blankline====================================================
 lua << EOF
 vim.opt.list = true
@@ -111,8 +114,8 @@ vim.opt.listchars:append("tab:  ")
 
 require("indent_blankline").setup {
     space_char_blankline = " ",
-    show_current_context = true,
-    show_current_context_start = true,
+	show_current_context = true,
+	show_current_context_start = true,
 }
 EOF
 " =============================================================
@@ -121,15 +124,16 @@ EOF
 lua << EOF
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-	ensure_installed = {"c", 
-					"lua",
-					"rust",
-					"python",
-					"go",
-					"html",
-					"css",
-					"javascript",
-					"typescript",
+	ensure_installed = {
+		"c", 
+		"lua",
+		"rust",
+		"python",
+		"go",
+		"html",
+		"css",
+		"javascript",
+		"typescript",
 	},
 
 	incremental_selection = {
@@ -163,16 +167,6 @@ require'nvim-treesitter.configs'.setup {
 EOF
 " ==============================================================
 
-" BlackLine=======================================================
-lua << EOF
-require("indent_blankline").setup {
-    -- for example, context is off by default, use this to turn it on
-    show_current_context = true,
-    show_current_context_start = true,
-}
-EOF
-" ================================================================
-
 " Minimap==========================================================
 "hi MinimapCurrentRange ctermfg=Green guifg=#f2f2f2 guibg=#2b2f3d
 "let g:minimap_range_color = 'MinimapCurrentRange'
@@ -198,21 +192,21 @@ let g:minimap_git_colors = 1
 lua require('Comment').setup()
 lua << EOF
 require("telescope").setup {
-  extensions = {
-    file_browser = {
-      theme = "ivy",
-      -- disables netrw and use telescope-file-browser in its place
-      hijack_netrw = true,
-      mappings = {
-        ["i"] = {
-          -- your custom insert mode mappings
-        },
-        ["n"] = {
-          -- your custom normal mode mappings },
-      },
-    },
-  },
-}
+	extensions = {
+		file_browser = {
+			theme = "ivy",
+			-- disables netrw and use telescope-file-browser in its place
+			hijack_netrw = true,
+			mappings = {
+				["i"] = {
+					-- your custom insert mode mappings
+				},
+				["n"] = {
+					-- your custom normal mode mappings },
+				},
+			},
+		},
+	},
 }
 EOF
 lua require("telescope").load_extension "file_browser"
@@ -224,11 +218,7 @@ lua require("telescope").load_extension "file_browser"
 "  autocmd WinScrolled,VimResized,QuitPre * silent! lua require('scrollbar').show()
 "  autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
 "  autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
-"augroup end
-" ScrollBarEnd==================
-
-" Bufferline=================================================
-set termguicolors
+"augroup end ScrollBarEnd================== Bufferline=================================================
 
 "May choose style: slant, padded_slant, thick, thin
 "numbers = \"ordinal"
@@ -237,7 +227,7 @@ lua << EOF
 require("bufferline").setup {
 	options = {
 		numbers = "ordinal",
-		separator_style = "thick",
+		separator_style = "slant",
 		mode = "buffers",
 		indicator_icon = '▎',
 		buffer_close_icon = '',
@@ -269,8 +259,17 @@ require("bufferline").setup {
 			right = function()
 				return {{text="| Buffers ",}}
 			end
-		}
-	}
+		},
+
+		offsets = {
+			{
+			filetype = "coc-explorer",
+			text = "File Explorer",
+			highlight = "Directory",
+			text_align = "left",
+			},
+		},
+	},
 }
 EOF
 " ==========================================================
@@ -285,6 +284,14 @@ autocmd ColorScheme *
 " Airline==================================================
 let g:airline_section_z = " %p ☰ %l/%L  ln : %c " 
 let g:battery#update_statusline = 1 
+let g:airline#extensions#clock#auto = 1
+let g:airline#extensions#clock#format = '%H:%M '
+
+let g:airline#extensions#clock#auto = 0
+function! AirlineInit()
+  let g:airline_section_b = airline#section#create(['clock', g:airline_left_alt_sep, g:airline_section_b])
+endfunction
+autocmd User AirlineAfterInit call AirlineInit()
 
 function! Battery_icon() 
   let l:battery_icon = {
@@ -298,17 +305,17 @@ function! Battery_icon()
   let l:nf = float2nr(round(backend.value / 20.0))
   return printf('%s', get(battery_icon, nf))
 endfunction
-let g:airline_section_b = airline#section#create(['%{Battery_icon()} %{battery#value()}%%'])
+let g:airline_section_b = airline#section#create([' %{Battery_icon()} %{battery#value()}%%'])
 
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 
 " powerline symbols
-" let g:airline_left_sep = \"\uE0B4" " ''
-" let g:airline_left_alt_sep = '|' "''
-" let g:airline_right_sep =  \"\uE0B6" " ''
-let g:airline_right_alt_sep = '|' "''
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = '' "'|'
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 " let g:airline_symbols.linenr = ' '
@@ -319,10 +326,10 @@ let g:airline_symbols.dirty='⚡'
 
 " Shortcuts
 " Find files using Telescope command-line sugar.
-nnoremap <F1> :Telescope find_files<CR>
-nnoremap <F2> :Telescope live_grep<CR>
-nnoremap <F3> :Telescope buffers<CR>
-nnoremap <F4> :Telescope help_tags<CR>
+nnoremap <F1> :Telescope find_files <CR>
+nnoremap <F2> :Telescope live_grep <CR>
+nnoremap <F3> :Telescope buffers <CR>
+nnoremap <F4> :Telescope help_tags <CR>
 
 " function! AdjustFontSize(amount)
 "   let s:fontsize = s:fontsize+a:amount
@@ -333,24 +340,23 @@ nnoremap <F4> :Telescope help_tags<CR>
 " noremap <C-kMinus> :call AdjustFontSize(-1)<CR>
 
 nnoremap <C-o> <Cmd> CocCommand explorer <CR>
+nmap <C-p> <Cmd> :Minimap <CR>
+nmap <C-l> :MinimapClose <CR>
 
 nnoremap <Tab> :BufferLineCycleNext <CR>
 nnoremap <S-Tab> ::BufferLineCyclePrev <CR>
 
-nmap <F9> :Minimap <CR>
-nmap <F10> :MinimapClose <CR>
+nmap <F5> :mksession! /Users/michael/.config/nvim/Session.vim <CR>
+nmap <F6> :source /Users/michael/.config/nvim/Session.vim <CR>
 
-nmap <F12> :mksession /Users/michael/.config/nvim/Session.vim <CR>
-nmap <F5> :source /Users/michael/.config/nvim/Session.vim <CR>
-
-nmap <F6> :CocDiagnostics <CR> 
+nmap <F8> :CocDiagnostics <CR> 
 "nmap <F6> :CocList diagnostics <CR>
 
 nmap <F7> :terminal <CR>
 
-nmap <F12> :TagbarToggle<CR>
+nmap <F9> :TagbarToggle <CR>
 
-nnoremap <silent> K :call ShowDocumentation()<CR>
+nnoremap <silent> K :call ShowDocumentation() <CR>
 function! ShowDocumentation()
   if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
@@ -406,44 +412,52 @@ db.preview_file_width = 55
 db.custom_footer = {"Have a nice day Michael 🌞"}
 db.hide_statusline = true
 db.custom_center = {
-      {icon = '  ',
-      desc = 'Recently latest session                 ',
-      shortcut = 'SPC s l',
-      action =':source /Users/michael/.config/nvim/Session.vim'},
-      {icon = '  ',
-      desc = 'Update Plugins                          ',
-      action = ':PlugUpdate',
-      shortcut = 'SPC f f'},
-      {icon = '  ',
-      desc ='File Browser                            ',
-      action =  'Telescope file_browser',
-      shortcut = 'SPC f b'},
-      {icon = '  ',
-      desc = 'Keyword Docs                            ',
-      action = 'Telescope help_tags',
-      shortcut = 'SPC f w'},
-      {icon = '  ',
-      desc = 'NeoVim config                           ',
-      action = ':e ~/.config/nvim/init.vim',
-      shortcut = 'SPC f d'},
-      }
+    {icon = '  ',
+    desc = 'Recently latest session                 ',
+    shortcut = 'SPC s l',
+    action =':source /Users/michael/.config/nvim/Session.vim'},
+    {icon = '  ',
+	desc = 'Update Plugins                          ',
+    action = ':PlugUpdate',
+    shortcut = 'SPC f f'},
+    {icon = '  ',
+    desc ='File Browser                            ',
+    action =  'Telescope file_browser',
+    shortcut = 'SPC f b'},
+    {icon = '  ',
+    desc = 'Keyword Docs                            ',
+    action = 'Telescope help_tags',
+    shortcut = 'SPC f w'},
+    {icon = '  ',
+    desc = 'NeoVim config                           ',
+    action = ':e ~/.config/nvim/init.vim',
+    shortcut = 'SPC f d'},
+}
 vim.g.indentLine_fileTypeExclude = { 'dashboard' }
 EOF
 
 " Color Schemas Configs============================================
-" let g:airline_theme='transparent'
+if (has("termguicolors"))
+	set termguicolors
+endif
+
 " let g:seoul256_background = 234
-" let g:everforest_backgound = 'hard'
-" colorscheme molokai
+
 " colorscheme seoul256
-" colorscheme ayu-dark
-" colorscheme nord
-" colorscheme rose-pine
-" colorscheme everforest
 colorscheme gruvbox
-" colorscheme iceberg
-"=================================================================
+
+lua << EOF
+-- Change color with system time
+if os.date("%H") < "18" then
+	vim.cmd("set background=light")
+else
+    vim.cmd("set background=dark")
+end
+EOF
 
 highlight! clear LineNr
 highlight! LineNr ctermfg=grey ctermbg=white guibg=#1D1D1D guifg=#848484
+
+"let g:airline_theme="base16_gruvbox_dark_medium"
+"=====================================================================
 
