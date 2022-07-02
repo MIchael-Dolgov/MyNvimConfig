@@ -3,9 +3,9 @@
 	"snippets.ultisnips.enable": false,
 
 	//config coc
-	"diagnostic.errorSign": "",
-	"diagnostic.warningSign": "",
-	"diagnostic.infoSign": "",
+	"diagnostic.errorSign": "",
+	"diagnostic.warningSign": "",
+	"diagnostic.infoSign": "",
 
 	//diagnostics coc
 	"diagnostic.checkCurrentLine": true,

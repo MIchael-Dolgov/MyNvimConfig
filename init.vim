@@ -61,7 +61,6 @@ Plug 'rcarriga/nvim-dap-ui'
 " Airline theme
 Plug 'lambdalisue/battery.vim/'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'enricobacis/vim-airline-clock'
 
 " Hardware
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -73,11 +72,11 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
-Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Airline
 Plug 'https://github.com/vim-airline/vim-airline'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
+Plug 'ryanoasis/vim-devicons'
 
 " Scrollbar
 Plug 'kevinhwang91/nvim-hlslens'
@@ -257,7 +256,9 @@ require("bufferline").setup {
 
 		custom_areas = {
 			right = function()
-				return {{text="| Buffers ",}}
+				
+				time = os.date("%H:%M")
+				return {{text= "  " .. " Time: " .. time .. "  ", guifg="#1d2021", guibg="#928374"}}
 			end
 		},
 
@@ -284,12 +285,12 @@ autocmd ColorScheme *
 " Airline==================================================
 let g:airline_section_z = " %p ☰ %l/%L  ln : %c " 
 let g:battery#update_statusline = 1 
-let g:airline#extensions#clock#auto = 1
-let g:airline#extensions#clock#format = '%H:%M '
+"let g:airline#extensions#clock#auto = 1
+"let g:airline#extensions#clock#format = '%H:%M'
+"let g:airline#extensions#clock#auto = 0
 
-let g:airline#extensions#clock#auto = 0
 function! AirlineInit()
-  let g:airline_section_b = airline#section#create(['clock', g:airline_left_alt_sep, g:airline_section_b])
+  let g:airline_section_b = airline#section#create([g:airline_section_b])
 endfunction
 autocmd User AirlineAfterInit call AirlineInit()
 
@@ -305,23 +306,26 @@ function! Battery_icon()
   let l:nf = float2nr(round(backend.value / 20.0))
   return printf('%s', get(battery_icon, nf))
 endfunction
-let g:airline_section_b = airline#section#create([' %{Battery_icon()} %{battery#value()}%%'])
+let g:airline_section_b = airline#section#create(['%{Battery_icon()} %{battery#value()}%%'])
 
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 
 " powerline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = '' "'|'
+let g:airline_left_sep = "\uE0B8" "''
+let g:airline_left_alt_sep = "\uE0B9" "''
+let g:airline_right_sep = "\uE0BA" "''
+let g:airline_right_alt_sep = "\uE0BB" "''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 " let g:airline_symbols.linenr = ' '
 " let g:airline_symbols.maxlinenr = '' "''
 let g:airline_symbols.dirty='⚡'
 " let g:airline_symbols.colnr = ' '
+
+let g:airline#extensions#tabline#formatter = 'default'
+let g:webdevicons_enable_airline_statusline_fileformat_symbols = 1
 " ======================================================
 
 " Shortcuts
