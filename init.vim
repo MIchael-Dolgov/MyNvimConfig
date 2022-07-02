@@ -400,6 +400,18 @@ let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
 let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
 
+" Color Schemas and Dashboard Configs=======================================
+if (has("termguicolors"))
+	set termguicolors
+endif
+
+" let g:seoul256_background = 236
+" let g:seoul256_light_background = 252
+
+" colorscheme seoul256-light
+colorscheme gruvbox
+"let g:airline_theme="base16_gruvbox_dark_medium"
+
 " Dashboard======================================
 " brew instal lolcat --thats optional
 lua << EOF
@@ -408,8 +420,17 @@ local db = require('dashboard')
 db.preview_command = 'cat | lolcat -F 0.1'
 db.preview_file_path = home .. '/.config/nvim/static/neovim.cat'
 db.preview_file_height = 12
+
+-- Change color with system time
+if os.date("%H") < "18" then
+	vim.cmd("set background=light")
+	db.custom_footer = {"Have a nice day Michael 🌞"}
+else
+    vim.cmd("set background=dark")
+	db.custom_footer = {"Have a nice night Michael 🌚"}
+end
+
 db.preview_file_width = 55
-db.custom_footer = {"Have a nice day Michael 🌞"}
 db.hide_statusline = true
 db.custom_center = {
     {icon = '  ',
@@ -436,29 +457,7 @@ db.custom_center = {
 vim.g.indentLine_fileTypeExclude = { 'dashboard' }
 EOF
 
-" Color Schemas Configs============================================
-if (has("termguicolors"))
-	set termguicolors
-endif
-
-" let g:seoul256_background = 236
-" let g:seoul256_light_background = 252
-
-" colorscheme seoul256-light
-colorscheme gruvbox
-
-lua << EOF
--- Change color with system time
-if os.date("%H") < "18" then
-	vim.cmd("set background=light")
-else
-    vim.cmd("set background=dark")
-end
-EOF
-
 highlight! clear LineNr
 highlight! LineNr ctermfg=grey ctermbg=white guibg=#1D1D1D guifg=#848484
-
-"let g:airline_theme="base16_gruvbox_dark_medium"
-"=====================================================================
+" =================================================================
 
