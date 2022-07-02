@@ -441,9 +441,10 @@ if (has("termguicolors"))
 	set termguicolors
 endif
 
-" let g:seoul256_background = 234
+" let g:seoul256_background = 236
+" let g:seoul256_light_background = 252
 
-" colorscheme seoul256
+" colorscheme seoul256-light
 colorscheme gruvbox
 
 lua << EOF
