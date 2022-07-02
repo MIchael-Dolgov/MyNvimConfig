@@ -13,7 +13,12 @@ let g:coc_global_extensions = [
 
 :set number
 :set numberwidth=8
-":highlight number ctermfg=black ctermbg=black
+
+" Commands:
+" zc - to fold the region
+:set foldlevel=20
+:set foldmethod=expr
+:set foldexpr=nvim_treesitter#foldexpr()
 
 :set completeopt=preview
 :set guifont=Fira\ Code:h12
@@ -25,11 +30,6 @@ let g:coc_global_extensions = [
 :set signcolumn=number
 :set shortmess+=c
 :set updatetime=200
-
-"Format symbols
-":set lcs+=space:·
-:let g:indentLine_char = ''
-":let g:indentLine_leadingSpaceEnabled='1'
 
 :set cursorline
 :set autoindent
@@ -73,11 +73,11 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'tpope/vim-fugitive'
-"Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'junegunn/gv.vim'
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Airline
 Plug 'https://github.com/vim-airline/vim-airline'
-Plug 'https://github.com/Yggdroot/indentLine'
 "Plug 'bling/vim-bufferline'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 
@@ -93,6 +93,7 @@ Plug 'https://github.com/preservim/tagbar'
 Plug 'Olical/aniseed'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'p00f/nvim-ts-rainbow'
 
 " Discord
 Plug 'andweeb/presence.nvim'
@@ -102,13 +103,25 @@ Plug 'wfxr/minimap.vim'   " brew install code-minimap
 
 call plug#end()
 
-"require("nvim-gps").setup()
+" blankline====================================================
+lua << EOF
+vim.opt.list = true
+vim.opt.listchars:append("space: ")
+vim.opt.listchars:append("tab:  ")
+
+require("indent_blankline").setup {
+    space_char_blankline = " ",
+    show_current_context = true,
+    show_current_context_start = true,
+}
+EOF
+" =============================================================
 
 " TreeSitter====================================================
 lua << EOF
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-ensure_installed = {"c", 
+	ensure_installed = {"c", 
 					"lua",
 					"rust",
 					"python",
@@ -116,15 +129,36 @@ ensure_installed = {"c",
 					"html",
 					"css",
 					"javascript",
-					"typescript",},
+					"typescript",
+	},
 
-    sync_install = false,
-    ignore_install = {},
-     highlight = {
-    enable = true,
-    disable = {},
-	additional_vim_regex_highlighting = false,
-  },
+	incremental_selection = {
+		enable = true,
+		sync_install = false,
+		ignore_install = {},
+
+		keymaps = {
+			init_selection = "gnn",
+			node_incremental = "grn",
+			scope_incremental = "grc",
+			node_decremental = "grm",
+		},
+	},
+
+	highlight = {
+		enable = true,
+		disable = {""},
+		additional_vim_regex_highlighting = true,
+	},	
+
+	rainbow = {
+		enable = true,
+		-- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+		extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+		max_file_lines = nil, -- Do not enable for files with more than n lines, int
+		-- colors = {}, -- table of hex strings
+		-- termcolors = {} -- table of colour name strings
+	},
 }
 EOF
 " ==============================================================
@@ -377,8 +411,8 @@ db.custom_center = {
       shortcut = 'SPC s l',
       action =':source /Users/michael/.config/nvim/Session.vim'},
       {icon = '  ',
-      desc = 'Find  File                              ',
-      action = 'Telescope find_files find_command=rg,--hidden,--files',
+      desc = 'Update Plugins                          ',
+      action = ':PlugUpdate',
       shortcut = 'SPC f f'},
       {icon = '  ',
       desc ='File Browser                            ',
@@ -397,15 +431,19 @@ vim.g.indentLine_fileTypeExclude = { 'dashboard' }
 EOF
 
 " Color Schemas Configs============================================
-"let g:airline_theme='transparent'
-let g:seoul256_background = 234
+" let g:airline_theme='transparent'
+" let g:seoul256_background = 234
+" let g:everforest_backgound = 'hard'
 " colorscheme molokai
-colorscheme seoul256
+" colorscheme seoul256
 " colorscheme ayu-dark
 " colorscheme nord
 " colorscheme rose-pine
 " colorscheme everforest
-" colorscheme gruvbox
+colorscheme gruvbox
 " colorscheme iceberg
 "=================================================================
+
+highlight! clear LineNr
+highlight! LineNr ctermfg=grey ctermbg=white guibg=#1D1D1D guifg=#848484
 
