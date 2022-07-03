@@ -50,11 +50,11 @@ call plug#begin('~/.config/nvim/plugins')
 "Dashboard
 Plug 'glepnir/dashboard-nvim'
 
-" Color Scheme
-Plug 'https://github.com/morhetz/gruvbox'
-Plug 'junegunn/seoul256.vim'
+" Color Scheme 
+Plug 'https://github.com/morhetz/gruvbox' 
 Plug 'arzg/vim-colors-xcode'
 Plug 'sainnhe/everforest'
+Plug 'cocopon/iceberg.vim'
 
 " Debug
 Plug 'mfussenegger/nvim-dap'
@@ -65,7 +65,7 @@ Plug 'lambdalisue/battery.vim/'
 Plug 'vim-airline/vim-airline-themes'
 
 " Hardware
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'} 
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tc50cal/vim-terminal'
 Plug 'numToStr/Comment.nvim'
@@ -111,7 +111,7 @@ lua require("scrollbar.handlers.search").setup()
 lua << EOF
 -- now working with everforest
 vim.opt.termguicolors = true
-vim.cmd [[highlight IndentBlanklineIndent1 guibg=#f1f1f1 gui=nocombine]]
+vim.cmd [[highlight IndentBlanklineIndent1 guibg=transparent gui=nocombine]]
 
 vim.opt.list = true
 vim.opt.listchars:append("space: ")
@@ -179,26 +179,6 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 " ==============================================================
-
-" Minimap==========================================================
-"hi MinimapCurrentRange ctermfg=Green guifg=#f2f2f2 guibg=#2b2f3d
-"let g:minimap_range_color = 'MinimapCurrentRange'
-
-"hi MinimapCurrentLine ctermfg=Green guifg=#CC6666 guibg=#f9f0f9 let g:minimap_cursor_color = 'MinimapCurrentLine'
-
-"autocmd ColorScheme *
-		\ highlight minimapCursor ctermbg=59  ctermfg=228 guibg=#1a9F4b guifg=#A39B7C |
-		\ highlight minimapRange ctermbg=59 ctermfg=228 guibg=#1a9F4b guifg=#50FA7B
-
-"let g:minimap_enable_highlight_colorgroup = 1
-let g:minimap_auto_start = 0
-let g:minimap_highlight_range = 1
-let g:minimap_width = 21
-let g:minimap_highlight_search = 1
-let g:minimap_git_colors = 1 
-"let g:minimap#filetype#excludes = 1
-"let g:minimap#window#height = 20
-"=========================================
 
 " other========================
 lua require('Comment').setup()
@@ -270,8 +250,8 @@ require("bufferline").setup {
 		custom_areas = {
 			right = function()
 				
-				time = os.date("%H:%M")
-				return {{text= "  " .. " Time: " .. time .. "  ", guifg="#1d2021", guibg="#BCBC9C"}}
+				time = os.date("%H:%M")	
+				return {{text= "  " .. " Time: " .. time .. "  ", guifg="#1D1D1D", guibg="#848484"}}
 			end
 		},
 
@@ -422,17 +402,15 @@ if (has("termguicolors"))
 	set termguicolors
 endif
 
-"let g:seoul256_background = 233
-"let g:seoul256_light_background = 252
+"let g:gruvbox_termcolors=256
+"let g:gruvbox_contrast_dark='soft'
+"let g:gruvbox_contrast_light='hard'
 
+"colorscheme iceberg
 "colorscheme gruvbox
-colorscheme everforest
+"colorscheme everforest
 
-"let g:everforest_enable_italic = 1
-"let g:everforest_disable_italic_comment = 1
-"let g:everforest_better_performance = 1
 "let g:airline_theme="base16_gruvbox_dark_medium"
-"let g:airline_theme="seoul256"
 
 " Dashboard======================================
 " brew instal lolcat --thats optional
@@ -441,20 +419,17 @@ local home = os.getenv('HOME')
 local db = require('dashboard')
 db.preview_command = 'cat | lolcat -F 0.1'
 db.preview_file_path = home .. '/.config/nvim/static/neovim.cat'
-db.preview_file_height = 16
+db.preview_file_height = 17
 
 -- Change color with system time
 local time = tonumber(os.date("%H"))
 if  (time >= 9) and (time <= 17) then
-
-	vim.cmd("set background=light")
-	--vim.cmd("colorscheme seoul256-light")
-	--vim.cmd("colorscheme xcodelight")
+	--vim.cmd("set background=light")
+	vim.cmd("colorscheme xcodelight")
 	db.custom_footer = {"Have a nice day Michael 🌞"}
 else
-    vim.cmd("set background=dark")
-	--vim.cmd("colorscheme seoul256")
-	--vim.cmd("colorscheme xcodedarkhc")
+    --vim.cmd("set background=dark")
+	vim.cmd("colorscheme xcodedark")
 	db.custom_footer = {"Have a nice night Michael 🌚"}
 end
 
@@ -486,7 +461,25 @@ vim.g.indentLine_fileTypeExclude = { 'dashboard' }
 EOF
 
 highlight! clear LineNr
-highlight! LineNr ctermfg=grey ctermbg=white guibg=#000010 guifg=#BCBC9C
-"guibg=#1D1D1D guifg=#848484
+highlight! LineNr ctermfg=grey ctermbg=white guibg=#1D1D1D guifg=#848484
+" guibg=#000010 guifg=#BCBC9C 
 " =================================================================
+
+" Minimap==========================================================
+hi MinimapCurrentRange ctermfg=Green guifg=#f2f2f2 guibg=#515151
+let g:minimap_range_color = 'MinimapCurrentRange'
+
+hi MinimapCurrentLine ctermfg=Green guifg=#BBBCFF guibg=#f9f0f9 
+let g:minimap_cursor_color = 'MinimapCurrentLine'
+
+let g:minimap_auto_start = 0
+let g:minimap_highlight_range = 1
+let g:minimap_width = 21
+let g:minimap_highlight_search = 1
+let g:minimap_git_colors = 1 
+"let minimap_close_buftypes = ["nofile"]
+"let g:minimap#filetype#excludes = 1
+"let g:minimap#window#height = 20
+"===================================================================
+
 
