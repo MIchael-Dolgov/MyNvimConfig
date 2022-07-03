@@ -12,7 +12,7 @@ let g:coc_global_extensions = [
 	\]
 
 :set number
-:set numberwidth=8
+:set numberwidth=6
 
 " Commands:
 " zc - to fold the region
@@ -53,6 +53,8 @@ Plug 'glepnir/dashboard-nvim'
 " Color Scheme
 Plug 'https://github.com/morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
+Plug 'arzg/vim-colors-xcode'
+Plug 'sainnhe/everforest'
 
 " Debug
 Plug 'mfussenegger/nvim-dap'
@@ -107,14 +109,26 @@ lua require("scrollbar.handlers.search").setup()
 
 " blankline====================================================
 lua << EOF
+-- now working with everforest
+vim.opt.termguicolors = true
+vim.cmd [[highlight IndentBlanklineIndent1 guibg=#f1f1f1 gui=nocombine]]
+
 vim.opt.list = true
 vim.opt.listchars:append("space: ")
 vim.opt.listchars:append("tab:  ")
 
 require("indent_blankline").setup {
-    space_char_blankline = " ",
+	--char = "",
+    --space_char_blankline = " ",
 	show_current_context = true,
 	show_current_context_start = true,
+	show_trailing_blankline_indent = false,
+	char_highlight_list = {
+    "IndentBlanklineIndent1",
+	},
+	space_char_highlight_list = {
+	"IndentBlanklineIndent1",
+	},
 }
 EOF
 " =============================================================
@@ -170,8 +184,7 @@ EOF
 "hi MinimapCurrentRange ctermfg=Green guifg=#f2f2f2 guibg=#2b2f3d
 "let g:minimap_range_color = 'MinimapCurrentRange'
 
-"hi MinimapCurrentLine ctermfg=Green guifg=#CC6666 guibg=#f9f0f9
-"let g:minimap_cursor_color = 'MinimapCurrentLine'
+"hi MinimapCurrentLine ctermfg=Green guifg=#CC6666 guibg=#f9f0f9 let g:minimap_cursor_color = 'MinimapCurrentLine'
 
 "autocmd ColorScheme *
 		\ highlight minimapCursor ctermbg=59  ctermfg=228 guibg=#1a9F4b guifg=#A39B7C |
@@ -258,7 +271,7 @@ require("bufferline").setup {
 			right = function()
 				
 				time = os.date("%H:%M")
-				return {{text= "  " .. " Time: " .. time .. "  ", guifg="#1d2021", guibg="#928374"}}
+				return {{text= "  " .. " Time: " .. time .. "  ", guifg="#1d2021", guibg="#BCBC9C"}}
 			end
 		},
 
@@ -276,10 +289,10 @@ EOF
 " ==========================================================
 
 "Coc-Explorer=================================================
-autocmd ColorScheme *
-  \ hi CocExplorerNormalFloatBorder guifg=#414347 guibg=#272B34
-  \ | hi CocExplorerNormalFloat guibg=#272B34
-  \ | hi CocExplorerSelectUI guibg=blue
+"autocmd ColorScheme *
+"  \ hi CocExplorerNormalFloatBorder guifg=#414347 guibg=#272B34
+"  \ | hi CocExplorerNormalFloat guibg=#272B34
+"  \ | hi CocExplorerSelectUI guibg=blue
 "==============================================================
 
 " Airline==================================================
@@ -409,12 +422,17 @@ if (has("termguicolors"))
 	set termguicolors
 endif
 
-" let g:seoul256_background = 236
-" let g:seoul256_light_background = 252
+"let g:seoul256_background = 233
+"let g:seoul256_light_background = 252
 
-" colorscheme seoul256-light
-colorscheme gruvbox
+"colorscheme gruvbox
+colorscheme everforest
+
+"let g:everforest_enable_italic = 1
+"let g:everforest_disable_italic_comment = 1
+"let g:everforest_better_performance = 1
 "let g:airline_theme="base16_gruvbox_dark_medium"
+"let g:airline_theme="seoul256"
 
 " Dashboard======================================
 " brew instal lolcat --thats optional
@@ -423,18 +441,24 @@ local home = os.getenv('HOME')
 local db = require('dashboard')
 db.preview_command = 'cat | lolcat -F 0.1'
 db.preview_file_path = home .. '/.config/nvim/static/neovim.cat'
-db.preview_file_height = 12
+db.preview_file_height = 16
 
 -- Change color with system time
-if os.date("%H") < "18" then
+local time = tonumber(os.date("%H"))
+if  (time >= 9) and (time <= 17) then
+
 	vim.cmd("set background=light")
+	--vim.cmd("colorscheme seoul256-light")
+	--vim.cmd("colorscheme xcodelight")
 	db.custom_footer = {"Have a nice day Michael 🌞"}
 else
     vim.cmd("set background=dark")
+	--vim.cmd("colorscheme seoul256")
+	--vim.cmd("colorscheme xcodedarkhc")
 	db.custom_footer = {"Have a nice night Michael 🌚"}
 end
 
-db.preview_file_width = 55
+db.preview_file_width = 54
 db.hide_statusline = true
 db.custom_center = {
     {icon = '  ',
@@ -462,6 +486,7 @@ vim.g.indentLine_fileTypeExclude = { 'dashboard' }
 EOF
 
 highlight! clear LineNr
-highlight! LineNr ctermfg=grey ctermbg=white guibg=#1D1D1D guifg=#848484
+highlight! LineNr ctermfg=grey ctermbg=white guibg=#000010 guifg=#BCBC9C
+"guibg=#1D1D1D guifg=#848484
 " =================================================================
 
