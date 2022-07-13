@@ -2,7 +2,7 @@ let g:coc_global_extensions = [
 	\ 'coc-css',
 	\ 'coc-html',
 	\ 'coc-explorer',
-	\ 'coc-go',
+	\ 'coc-go', 
 	\ 'coc-python', 
 	\ 'coc-rust-analyzer',
 	\ 'coc-tsserver',
@@ -52,9 +52,9 @@ Plug 'glepnir/dashboard-nvim'
 
 " Color Scheme 
 Plug 'https://github.com/morhetz/gruvbox' 
-Plug 'arzg/vim-colors-xcode'
+Plug 'doums/darcula'
 Plug 'sainnhe/everforest'
-Plug 'cocopon/iceberg.vim'
+Plug 'dracula/vim'
 
 " Debug
 Plug 'mfussenegger/nvim-dap'
@@ -74,11 +74,15 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
+Plug 'https://github.com/michaelb/sniprun'
 
 " Airline
 Plug 'https://github.com/vim-airline/vim-airline'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 Plug 'ryanoasis/vim-devicons'
+
+" Markdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
 " Scrollbar
 Plug 'kevinhwang91/nvim-hlslens'
@@ -91,9 +95,8 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'https://github.com/preservim/tagbar'
 Plug 'Olical/aniseed'
 Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
 Plug 'p00f/nvim-ts-rainbow'
-
 " Discord
 Plug 'andweeb/presence.nvim'
 
@@ -106,32 +109,6 @@ call plug#end()
 lua require("scrollbar").setup()
 lua require("scrollbar.handlers.search").setup()
 " ===================================================================
-
-" blankline====================================================
-lua << EOF
--- now working with everforest
-vim.opt.termguicolors = true
-vim.cmd [[highlight IndentBlanklineIndent1 guibg=transparent gui=nocombine]]
-
-vim.opt.list = true
-vim.opt.listchars:append("space: ")
-vim.opt.listchars:append("tab:  ")
-
-require("indent_blankline").setup {
-	--char = "",
-    --space_char_blankline = " ",
-	show_current_context = true,
-	show_current_context_start = true,
-	show_trailing_blankline_indent = false,
-	char_highlight_list = {
-    "IndentBlanklineIndent1",
-	},
-	space_char_highlight_list = {
-	"IndentBlanklineIndent1",
-	},
-}
-EOF
-" =============================================================
 
 " TreeSitter====================================================
 lua << EOF
@@ -194,7 +171,7 @@ require("telescope").setup {
 					-- your custom insert mode mappings
 				},
 				["n"] = {
-					-- your custom normal mode mappings },
+					-- your custom normal mode mappings }, },
 				},
 			},
 		},
@@ -219,10 +196,10 @@ lua << EOF
 require("bufferline").setup {
 	options = {
 		numbers = "ordinal",
-		separator_style = "slant",
+		separator_style = "thin",
 		mode = "buffers",
 		indicator_icon = '▎',
-		buffer_close_icon = '',
+		buffer_close_icon = '',
 		modified_icon = '●',
 		close_icon = '',
 		left_trunc_marker = '',
@@ -251,7 +228,7 @@ require("bufferline").setup {
 			right = function()
 				
 				time = os.date("%H:%M")	
-				return {{text= "  " .. " Time: " .. time .. "  ", guifg="#1D1D1D", guibg="#848484"}}
+				return {{text= "|  Time: " .. time .. "  ", guifg="#1D1D1D", guibg="#C86666"}}
 			end
 		},
 
@@ -276,7 +253,7 @@ EOF
 "==============================================================
 
 " Airline==================================================
-let g:airline_section_z = " %p ☰ %l/%L  ln : %c " 
+let g:airline_section_z = " %p ☰ %l/%L  ln : %c "
 let g:battery#update_statusline = 1 
 "let g:airline#extensions#clock#auto = 1
 "let g:airline#extensions#clock#format = '%H:%M'
@@ -289,11 +266,11 @@ autocmd User AirlineAfterInit call AirlineInit()
 
 function! Battery_icon() 
   let l:battery_icon = {
-    \ 5: "",
-    \ 4: "",
-    \ 3: "",
-    \ 2: "",
-    \ 1: ""}
+    \ 5: " ",
+    \ 4: " ",
+    \ 3: " ",
+    \ 2: " ",
+    \ 1: " "}
     
   let l:backend = battery#backend()
   let l:nf = float2nr(round(backend.value / 20.0))
@@ -306,10 +283,10 @@ if !exists('g:airline_symbols')
 endif
 
 " powerline symbols
-let g:airline_left_sep = "\uE0B8" "''
-let g:airline_left_alt_sep = "\uE0B9" "''
-let g:airline_right_sep = "\uE0BA" "''
-let g:airline_right_alt_sep = "\uE0BB" "''
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 " let g:airline_symbols.linenr = ' '
@@ -402,15 +379,15 @@ if (has("termguicolors"))
 	set termguicolors
 endif
 
-"let g:gruvbox_termcolors=256
-"let g:gruvbox_contrast_dark='soft'
-"let g:gruvbox_contrast_light='hard'
+let g:gruvbox_termcolors=256
 
-"colorscheme iceberg
-"colorscheme gruvbox
+colorscheme gruvbox
+"colorscheme darcula
 "colorscheme everforest
+"colorscheme dracula
 
 "let g:airline_theme="base16_gruvbox_dark_medium"
+"let g:airline_theme="transparent"
 
 " Dashboard======================================
 " brew instal lolcat --thats optional
@@ -419,17 +396,16 @@ local home = os.getenv('HOME')
 local db = require('dashboard')
 db.preview_command = 'cat | lolcat -F 0.1'
 db.preview_file_path = home .. '/.config/nvim/static/neovim.cat'
-db.preview_file_height = 17
+db.preview_file_height = 15
 
 -- Change color with system time
-local time = tonumber(os.date("%H"))
-if  (time >= 9) and (time <= 17) then
-	--vim.cmd("set background=light")
-	vim.cmd("colorscheme xcodelight")
+--local time = tonumber(os.date("%H"))
+--if (time >= 9) and (time <= 17) then
+if false then
+	vim.cmd("set background=light")
 	db.custom_footer = {"Have a nice day Michael 🌞"}
 else
-    --vim.cmd("set background=dark")
-	vim.cmd("colorscheme xcodedark")
+    vim.cmd("set background=dark")
 	db.custom_footer = {"Have a nice night Michael 🌚"}
 end
 
@@ -456,21 +432,25 @@ db.custom_center = {
     desc = 'NeoVim config                           ',
     action = ':e ~/.config/nvim/init.vim',
     shortcut = 'SPC f d'},
+    {icon = '  ',
+    desc = 'Exit NeoVim                             ',
+    action = ':q!',
+    shortcut = 'SPC f q'},
 }
 vim.g.indentLine_fileTypeExclude = { 'dashboard' }
 EOF
 
 highlight! clear LineNr
-highlight! LineNr ctermfg=grey ctermbg=white guibg=#1D1D1D guifg=#848484
-" guibg=#000010 guifg=#BCBC9C 
+highlight! LineNr ctermfg=grey ctermbg=white guifg=#848484 guibg=#1b1b1d
+
 " =================================================================
 
 " Minimap==========================================================
-hi MinimapCurrentRange ctermfg=Green guifg=#f2f2f2 guibg=#515151
-let g:minimap_range_color = 'MinimapCurrentRange'
+"hi MinimapCurrentRange ctermfg=Green guifg=#f3f2f9 guibg=#696276
+"let g:minimap_range_color = 'MinimapCurrentRange'
 
-hi MinimapCurrentLine ctermfg=Green guifg=#BBBCFF guibg=#f9f0f9 
-let g:minimap_cursor_color = 'MinimapCurrentLine'
+"hi MinimapCurrentLine ctermfg=Green guifg=#f3f2f9 guibg=#C86666
+"let g:minimap_cursor_color = 'MinimapCurrentLine'
 
 let g:minimap_auto_start = 0
 let g:minimap_highlight_range = 1
@@ -481,5 +461,4 @@ let g:minimap_git_colors = 1
 "let g:minimap#filetype#excludes = 1
 "let g:minimap#window#height = 20
 "===================================================================
-
 
